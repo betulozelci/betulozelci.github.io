@@ -1,16 +1,16 @@
-/* Renders the pages from js/site.js, js/paintings.js and js/exhibitions.js.
-   You should not need to edit this file to add paintings or shows. */
+/* Renders every page from the files in data/ (site.json, paintings.json, exhibitions.json, about.json).
+   Those files are what the editor at /admin writes. You should not need to edit this file. */
 (function () {
   'use strict';
 
-  var S = window.SITE || {};
-  var P = window.PAINTINGS || [];
-  var E = window.EXHIBITIONS || [];
   var ROOT = document.body.getAttribute('data-root') || '';   // "" on root pages, "../" inside /work/
   var PAGE = document.body.getAttribute('data-page');
+  var LINK_KEYS = ['email', 'instagram', 'behance', 'saatchi'];
+  var VIEW_ORDER = ['front', 'detail', 'detail2', 'detail3', 'edges', 'room', 'exhibition', 'artist'];
   var VIEW_LABELS = { front: 'Front', detail: 'Detail', detail2: 'Detail 2', detail3: 'Detail 3', edges: 'Edges', room: 'In a room', exhibition: 'In the exhibition', artist: 'With the artist' };
-  var LINK_KEYS = ['email', 'instagram', 'behance', 'saatchi'];   // keys that are web links, not text
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  var S = {}, P = [], E = [], A = {};
 
   function $(sel, el) { return (el || document).querySelector(sel); }
   function $$(sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); }
@@ -21,23 +21,50 @@
     return e;
   }
 
-  // ---------- images ----------
-  function paintingImg(p, view) { return ROOT + 'images/paintings/' + p.id + '/' + view + '.jpg'; }
+  // ---------- loading ----------
+  function loadJSON(name) {
+    return fetch(ROOT + 'data/' + name + '.json', { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('Could not load data/' + name + '.json (' + r.status + ')');
+      return r.json();
+    });
+  }
+  function loadError(err) {
+    var box = el('div', 'load-error');
+    if (location.protocol === 'file:') {
+      box.textContent = 'This page needs a local web server to load its data. Double-click preview.bat in the site folder, or open the live site.';
+    } else {
+      box.textContent = 'The site data could not be loaded. ' + (err && err.message ? err.message : '');
+    }
+    document.body.insertBefore(box, document.body.firstChild);
+  }
+
+  // ---------- helpers ----------
+  function slugify(s) {
+    var map = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'i̇': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'Ç': 'c', 'Ğ': 'g', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u' };
+    return String(s || '').replace(/[çğıi̇öşüÇĞİÖŞÜ]/g, function (c) { return map[c] || c; })
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'work';
+  }
+  function pid(p) { return p.id || slugify(p.title); }
+  function src(path) { return path ? ROOT + String(path).replace(/^\/+/, '') : ''; }
+  function views(p) {
+    var imgs = p.images || {};
+    return VIEW_ORDER.filter(function (v) { return imgs[v]; });
+  }
+  function frontSrc(p) { var v = views(p); return v.length ? src(p.images[v[0]]) : ''; }
 
   // An <img> that, if the file is missing, turns into a grey box naming the missing path.
-  function img(src, alt, cls) {
+  function img(s, alt, cls) {
     var e = el('img', cls);
-    e.src = src;
+    e.src = s;
     e.alt = alt || '';
     e.loading = 'lazy';
     e.addEventListener('error', function () {
-      var d = el('div', 'missing', 'missing: ' + src.replace(ROOT, ''));
+      var d = el('div', 'missing', 'missing: ' + s.replace(ROOT, ''));
       e.parentNode && e.parentNode.replaceChild(d, e);
     });
     return e;
   }
 
-  // ---------- data helpers ----------
   function newestFirst(list) {
     return list.slice().sort(function (a, b) {
       return (b.year - a.year) || ((a.order || 99) - (b.order || 99));
@@ -48,7 +75,7 @@
     return p.width_cm + ' × ' + p.height_cm + ' cm · ' + inches(p.width_cm) + ' × ' + inches(p.height_cm) + ' in';
   }
   function today() { var t = new Date(); t.setHours(0, 0, 0, 0); return t; }
-  function date(s) { return s ? new Date(s + 'T00:00:00') : null; }
+  function date(s) { return s ? new Date(String(s).slice(0, 10) + 'T00:00:00') : null; }
   function fmt(d, withYear) { return d.getDate() + ' ' + MONTHS[d.getMonth()] + (withYear ? ' ' + d.getFullYear() : ''); }
   function exhDates(e) {
     var s = date(e.start), en = date(e.end), t = today();
@@ -65,19 +92,14 @@
     return E.filter(function (e) { var en = exhEnd(e); return en && en >= t; })
             .sort(function (a, b) { return date(a.start) - date(b.start); });
   }
-  function pastShows() {
-    var t = today();
-    return E.filter(function (e) { var en = exhEnd(e); return en && en < t; })
-            .sort(function (a, b) { return date(b.start) - date(a.start); });
-  }
 
-  // ---------- a work tile (used on home, work page, "more work") ----------
+  // ---------- a work tile ----------
   function tile(p) {
     var a = el('a', 'tile');
-    a.href = ROOT + 'work/painting.html?p=' + encodeURIComponent(p.id);
+    a.href = ROOT + 'work/painting.html?p=' + encodeURIComponent(pid(p));
     var fig = el('figure');
     var box = el('div', 'img');
-    box.appendChild(img(paintingImg(p, 'front'), p.title));
+    box.appendChild(img(frontSrc(p), p.title));
     var cap = el('figcaption');
     cap.appendChild(el('span', 't', p.title));
     cap.appendChild(el('span', 'm', p.width_cm + ' × ' + p.height_cm + ' cm · ' + p.medium + ' · ' + p.year));
@@ -112,16 +134,16 @@
   // ---------- HOME ----------
   function renderHome() {
     var hero = null;
-    for (var i = 0; i < P.length; i++) if (P[i].id === S.hero) hero = P[i];
+    P.forEach(function (p) { if (pid(p) === S.hero) hero = p; });
     if (!hero && P.length) hero = newestFirst(P)[0];
     var heroBox = $('#hero');
     if (hero && heroBox) {
-      heroBox.appendChild(img(paintingImg(hero, 'front'), hero.title));
-      heroBox.appendChild(el('span', 'caption', hero.title + ', ' + hero.year + ' · ' + hero.medium.toLowerCase() + ' · ' + hero.width_cm + ' × ' + hero.height_cm + ' cm'));
+      heroBox.appendChild(img(frontSrc(hero), hero.title));
+      heroBox.appendChild(el('span', 'caption', hero.title + ', ' + hero.year + ' · ' + String(hero.medium || '').toLowerCase() + ' · ' + hero.width_cm + ' × ' + hero.height_cm + ' cm'));
     }
 
     var avatarBox = $('#avatar');
-    if (avatarBox && S.portrait) avatarBox.appendChild(img(ROOT + S.portrait, S.name, 'avatar'));
+    if (avatarBox && S.portrait) avatarBox.appendChild(img(src(S.portrait), S.name, 'avatar'));
 
     var up = upcomingShows().slice(0, 3);
     var sec = $('#exhibitions');
@@ -170,7 +192,6 @@
     });
 
     var state = { surface: 'all', year: 'all' };
-
     function readHash() {
       var h = location.hash.replace('#', '');
       if (!h) return;
@@ -184,8 +205,7 @@
       var parts = [];
       if (state.surface !== 'all') parts.push('surface=' + state.surface);
       if (state.year !== 'all') parts.push('year=' + state.year);
-      var url = location.pathname + location.search + (parts.length ? '#' + parts.join('&') : '');
-      history.replaceState(null, '', url);
+      history.replaceState(null, '', location.pathname + location.search + (parts.length ? '#' + parts.join('&') : ''));
     }
     function apply() {
       $$('[data-surface]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-surface') === state.surface)); });
@@ -222,45 +242,42 @@
     var id = new URLSearchParams(location.search).get('p');
     var list = newestFirst(P);
     var idx = -1;
-    for (var i = 0; i < list.length; i++) if (list[i].id === id) idx = i;
+    list.forEach(function (p, i) { if (pid(p) === id) idx = i; });
     var p = list[idx];
     var art = $('#artwork');
     if (!p) {
       art.innerHTML = '';
-      art.appendChild(el('p', 'empty', 'Painting not found. Check the "p=" part of the address matches an id in js/paintings.js.'));
+      art.appendChild(el('p', 'empty', 'Painting not found.'));
       return;
     }
     document.title = p.title + (S.name ? ' — ' + S.name : '');
 
-    // previous / next
     var prev = $('#prev'), next = $('#next');
-    if (list[idx - 1]) prev.href = 'painting.html?p=' + encodeURIComponent(list[idx - 1].id); else prev.hidden = true;
-    if (list[idx + 1]) next.href = 'painting.html?p=' + encodeURIComponent(list[idx + 1].id); else next.hidden = true;
+    if (list[idx - 1]) prev.href = 'painting.html?p=' + encodeURIComponent(pid(list[idx - 1])); else prev.hidden = true;
+    if (list[idx + 1]) next.href = 'painting.html?p=' + encodeURIComponent(pid(list[idx + 1])); else next.hidden = true;
 
-    // images
-    var views = (p.views && p.views.length) ? p.views : ['front'];
+    var vs = views(p);
     var main = $('#main');
-    main.appendChild(img(paintingImg(p, views[0]), p.title));
+    if (vs.length) main.appendChild(img(src(p.images[vs[0]]), p.title));
     var thumbs = $('#thumbs');
-    if (views.length > 1) {
-      views.forEach(function (v, i) {
+    if (vs.length > 1) {
+      vs.forEach(function (v, i) {
         var b = el('button');
         b.type = 'button';
         b.setAttribute('aria-pressed', String(i === 0));
-        b.appendChild(img(paintingImg(p, v), p.title + ' — ' + (VIEW_LABELS[v] || v)));
+        b.appendChild(img(src(p.images[v]), p.title + ' — ' + (VIEW_LABELS[v] || v)));
         b.appendChild(el('span', null, VIEW_LABELS[v] || v));
         b.addEventListener('click', function () {
           main.innerHTML = '';
-          main.appendChild(img(paintingImg(p, v), p.title));
+          main.appendChild(img(src(p.images[v]), p.title));
           $$('button', thumbs).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
         });
         thumbs.appendChild(b);
       });
-    } else {
+    } else if (thumbs) {
       thumbs.parentNode.removeChild(thumbs);
     }
 
-    // zoom
     var dlg = $('#zoom'), zoomImg = $('#zoom img');
     main.addEventListener('click', function () {
       var cur = $('img', main);
@@ -270,14 +287,15 @@
     });
     dlg.addEventListener('click', function () { dlg.close(); });
 
-    // info
     $('#title').textContent = p.title;
     $('#year').textContent = p.year;
-    $('#medium').textContent = p.medium;
+    $('#medium').textContent = p.medium || '';
     $('#size').textContent = sizeText(p);
     var status = $('#status');
     if (p.status === 'sold') {
       status.appendChild(el('span', 'status-text', 'Sold'));
+    } else if (p.status === 'nfs') {
+      status.appendChild(el('span', 'status-text', 'Not for sale'));
     } else if (p.saatchi_url) {
       var a = el('a', 'btn', 'Available on Saatchi Art');
       a.href = p.saatchi_url; a.target = '_blank'; a.rel = 'noopener';
@@ -290,24 +308,37 @@
     var enq = $('#enquire');
     if (S.email) enq.href = 'mailto:' + S.email + '?subject=' + encodeURIComponent('Enquiry: ' + p.title); else enq.hidden = true;
 
-    // more work: the next four in the list, wrapping around
     var more = $('#more');
     var others = list.filter(function (x) { return x !== p; });
-    var start = idx % Math.max(others.length, 1);
-    var pick = others.slice(start).concat(others.slice(0, start)).slice(0, 4);
-    pick.forEach(function (x) { more.appendChild(tile(x)); });
+    var start = others.length ? idx % others.length : 0;
+    others.slice(start).concat(others.slice(0, start)).slice(0, 4).forEach(function (x) { more.appendChild(tile(x)); });
   }
 
   // ---------- ABOUT ----------
   function renderAbout() {
     var portraitBox = $('#portrait');
-    if (portraitBox && S.portrait) portraitBox.appendChild(img(ROOT + S.portrait, S.name));
+    if (portraitBox && S.portrait) portraitBox.appendChild(img(src(S.portrait), S.name));
     var studioBox = $('#studio');
-    if (studioBox && S.studio) studioBox.appendChild(img(ROOT + S.studio, 'Exhibition view'));
+    if (studioBox && S.studio) studioBox.appendChild(img(src(S.studio), 'Exhibition view'));
+
+    var st = $('#statement');
+    if (st) {
+      String(A.statement || '').split(/\n\s*\n/).forEach(function (para) {
+        if (para.trim()) st.appendChild(el('p', null, para.trim()));
+      });
+    }
+    function cvList(ul, items) {
+      (items || []).forEach(function (it) {
+        var li = el('li');
+        li.appendChild(el('span', 'y', String(it.year || '')));
+        li.appendChild(el('span', null, it.text || ''));
+        ul.appendChild(li);
+      });
+    }
+    cvList($('#cv-education'), A.education);
 
     var ul = $('#cv-exhibitions');
     if (ul) {
-      // About lists exhibitions that have already opened (past, plus any running now) — newest first.
       var t0 = today();
       var shows = E.filter(function (e) { var s0 = date(e.start); return s0 && s0 <= t0; });
       shows.sort(function (a, b) { return date(b.start) - date(a.start); });
@@ -319,12 +350,26 @@
         ul.appendChild(li);
       });
     }
+
+    var awardsCol = $('#cv-awards-col');
+    if (awardsCol) {
+      if (A.show_awards && A.awards && A.awards.length) { awardsCol.hidden = false; cvList($('#cv-awards'), A.awards); }
+      else awardsCol.hidden = true;
+    }
   }
 
   // ---------- go ----------
-  fillCommon();
-  if (PAGE === 'home') renderHome();
-  else if (PAGE === 'work') renderWork();
-  else if (PAGE === 'painting') renderPainting();
-  else if (PAGE === 'about') renderAbout();
+  Promise.all([loadJSON('site'), loadJSON('paintings'), loadJSON('exhibitions'), loadJSON('about')])
+    .then(function (res) {
+      S = res[0] || {};
+      P = (res[1] && res[1].paintings) || [];
+      E = (res[2] && res[2].exhibitions) || [];
+      A = res[3] || {};
+      fillCommon();
+      if (PAGE === 'home') renderHome();
+      else if (PAGE === 'work') renderWork();
+      else if (PAGE === 'painting') renderPainting();
+      else if (PAGE === 'about') renderAbout();
+    })
+    .catch(loadError);
 })();

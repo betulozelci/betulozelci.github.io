@@ -2,28 +2,31 @@ IMAGES — what goes where
 ========================
 
 images/
-  portrait.jpg                  her photo (home intro circle + About page)       required
-  studio.jpg                    studio photo (About page)                        optional
+  portrait.jpg                  her photo (home intro circle + About page)
+  exhibition-view.jpg           wide photo on the About page
+  uploads/                      everything added through the /admin editor lands here (auto-resized WebP)
   paintings/
-    <painting-id>/              ONE FOLDER PER PAINTING. Folder name = "id" in js/paintings.js
-      front.jpg                 straight-on photo of the painting                required
-      detail.jpg                close-up of surface / texture                    optional
-      edges.jpg                 side or edge view                                optional
-      room.jpg                  painting on a wall / in a room                   optional
-      exhibition.jpg            installation view in a show                      optional
-      artist.jpg                the artist with the painting                     optional
-      detail2.jpg / detail3.jpg more close-ups                                   optional
+    <painting-id>/              one folder per painting, added by hand
+      front.jpg                 straight-on photo of the painting                    required
+      detail.jpg                close-up of surface / texture                        optional
+      detail2.jpg / detail3.jpg more close-ups                                       optional
+      edges.jpg                 side or edge view                                    optional
+      room.jpg                  painting on a wall / in a room                       optional
+      exhibition.jpg            installation view in a show                          optional
+      artist.jpg                the artist with the painting                         optional
 
-NAMING RULES (they matter on GitHub)
+The site does not guess file names: whatever is listed under "images" for a painting in
+data/paintings.json is what it shows. Through /admin this is filled in for you.
+
+NAMING RULES (they matter on GitHub, which is case-sensitive)
 - folder names: lowercase, hyphens, no spaces, no Turkish letters (ı ş ğ ç ö ü)
-    good:  mavi-kompozisyon-1     untitled-no-4     sessiz-liman
-    bad:   Mavi Kompozisyon 1     Untitled No.4     sessiz liman.JPG
-- file names inside a folder are FIXED: front.jpg detail.jpg detail2.jpg detail3.jpg edges.jpg room.jpg exhibition.jpg artist.jpg  (lowercase, .jpg)
-- ORIGINAL photos live in ../originals/ (outside the site) so they are not uploaded to GitHub.
-  Put new originals there too; the web copies in here should be max 2000 px on the long edge.
-- if you rename a folder, change its "id" in js/paintings.js to the same text,
-  and list only the files you actually put in it under "views".
+    good:  mavi-kompozisyon-1     untitled-no-4
+    bad:   Mavi Kompozisyon 1     Untitled No.4.JPG
+- paths in the data files are relative to the site root and never start with "/":
+    images/paintings/becoming-one/front.jpg
 
-IMAGE PREP (keeps the site fast and the repo small)
-- JPG, long edge 2000 px, quality ~80  →  usually 300–600 KB each
+IMAGE PREP (keeps the site fast and the repository small)
+- JPG, long edge 2000–2400 px, quality ~80–85  →  usually 300–700 KB each
 - straight-on, even daylight, colour-accurate; crop to the painting's edges for front.jpg
+- ORIGINAL full-size photos live in ../originals/ (outside this repository) so they are
+  never uploaded to GitHub. Put new originals there too.

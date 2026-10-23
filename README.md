@@ -1,49 +1,72 @@
-# Artist portfolio — test site
+# betulozelci.github.io
 
-Plain HTML, CSS and JavaScript. No build step, no framework. Open `index.html` in a browser and it works; put the same files on GitHub Pages and it works there too.
+Betul Özelçi's portfolio site. Plain HTML, CSS and JavaScript — no build step, no framework. GitHub Pages serves the files exactly as they are in this repository.
 
-## Folder map
+**Live site:** https://betulozelci.github.io (later: https://betulozelci.com)
+**Editor:** https://betulozelci.github.io/admin/ — add paintings, exhibitions and photos without touching code.
+
+## How it fits together
 
 ```
-index.html            home: hero painting, intro, exhibitions strip, selected works
-work.html             all works, with Surface and Year filters
-about.html            portrait, statement, education / exhibitions / awards, studio photo, contact
-privacy.html          placeholder privacy page (edit before going live)
-work/painting.html    ONE page that shows any painting:  work/painting.html?p=<painting-id>
-css/style.css         all styling
-js/site.js            name, tagline, email, Instagram, Saatchi profile, hero painting, photo paths   ← edit
-js/paintings.js       the list of paintings                                                         ← edit
-js/exhibitions.js     the list of shows                                                             ← edit
-js/main.js            renders the pages from the three files above (no need to touch)
-images/               photos — see images/README.txt for exact names
-.nojekyll             tells GitHub Pages to serve the files as they are
+index.html              home: hero painting, intro, upcoming exhibitions, selected works
+work.html               all works, with Surface and Year filters
+work/painting.html      ONE page that shows any painting:  work/painting.html?p=<id>
+about.html              portrait, statement, education / exhibitions / awards, wide photo, contact
+privacy.html            privacy page (edit before going live)
+
+data/site.json          name, tagline, email, Instagram, Behance, Saatchi, hero painting, photos   ┐
+data/paintings.json     the paintings                                                              │ edited through
+data/exhibitions.json   the shows (upcoming → home page, past → About page, automatic)             │ /admin
+data/about.json         artist statement, education, awards                                        ┘
+
+admin/index.html        the editor page (Sveltia CMS, loaded from a CDN)
+admin/config.yml        which fields the editor shows, and where it saves them
+
+js/main.js              reads data/*.json and fills the pages. Not edited day to day.
+css/style.css           all styling
+images/                 photos. The editor puts new uploads in images/uploads/ (auto-resized to WebP).
+preview.bat             double-click to view the site on your own computer (see below)
+.nojekyll               tells GitHub Pages not to process the files
 ```
 
-## Adding a painting (3 steps)
+## Day-to-day editing (for Betul)
 
-1. Make a folder `images/paintings/<slug>/` — lowercase, hyphens, no spaces, no Turkish letters — and put `front.jpg` in it (plus `detail.jpg`, `edges.jpg`, `room.jpg` if you have them).
-2. Open `js/paintings.js`, copy one `{ ... }` block, paste it, and set `id` to the same `<slug>`. Fill in the other fields. Set `views` to the files you actually added.
-3. Save. Refresh the browser. Done — it appears on the Work page, in the filters, and (if `featured: true`) on the home page.
+1. Open **https://betulozelci.github.io/admin/** and sign in with GitHub.
+2. **Paintings** → add or edit an entry → upload a front photo (any size; it is resized in the browser) → **Save**.
+3. The site updates by itself about a minute later. Nothing else to do.
 
-If a photo is missing or misnamed, the site shows a grey box saying `missing: images/...` with the exact path it expected. That's on purpose for testing.
+Rules of thumb:
+- **Status** "Sold" shows a Sold label; "Available" plus a Saatchi Art link shows an *Available on Saatchi Art* button; "Available" without a link just says Available.
+- **Show on home page** + **Order** decide which works appear under *Selected works* (max 9).
+- **Exhibitions**: anything whose closing date is today or later appears on the home page as upcoming (max 3); anything that has opened appears on the About page. Both happen automatically from the dates.
+- **Artist statement**: leave an empty line between paragraphs.
+- **Awards & press** stays hidden until *Show awards & press* is on and the list has an entry.
 
-## Adding an exhibition
+## Previewing on your computer
 
-Add a block to `js/exhibitions.js` with title, venue, city, start and end dates (`YYYY-MM-DD`). Current and future shows appear on the home page (max 3); past ones move to the About page by themselves. If nothing is upcoming, the home strip hides itself.
+The pages load their content from the `data/` files, which browsers refuse to do when a page is opened directly from the disk. So instead of double-clicking `index.html`, double-click **`preview.bat`**: it starts a tiny web server and opens http://localhost:8000/ in your browser. Close the black window to stop it. (Needs Python or Node.js installed — the script tells you if neither is found.)
 
-## Testing on your computer
+## Editing the data files by hand
 
-Double-click `index.html`. Everything works from the file system, including the painting pages and filters. Check it on a phone too: on the same Wi-Fi, run a tiny server from the folder — `python3 -m http.server 8000` — and open `http://<your-computer-ip>:8000` on the phone.
+Everything the editor does can also be done by editing `data/*.json` in a text editor and pushing with GitHub Desktop. Keep the JSON valid (commas between entries, no trailing comma) — https://jsonlint.com will tell you if something is off. Image paths are relative to the site root: `images/paintings/becoming-one/front.jpg`.
 
-## Putting it on GitHub Pages
+Painting photos added by hand go in `images/paintings/<id>/` with the fixed names `front.jpg`, `detail.jpg`, `detail2.jpg`, `detail3.jpg`, `edges.jpg`, `room.jpg`, `exhibition.jpg`, `artist.jpg` — then list the ones you added under `images` in `data/paintings.json`. Long edge 2000–2400 px, JPG quality ~80–85. See `images/README.txt`.
 
-1. Create a new repository on GitHub (public, no README).
-2. Upload the **contents** of this folder to the repository root — `index.html` must be at the top level, not inside a `site/` folder.
-3. In the repository: **Settings → Pages → Source: Deploy from a branch → Branch: main, folder: / (root) → Save**.
-4. After a minute the site is live at `https://<username>.github.io/<repository-name>/`.
+## One-time setup of the editor (for Utku)
 
-Every image and link in these files is a *relative* path (`images/...`, `../css/...`), never a path starting with `/`. That is what makes the site work both on your computer and under `github.io/<repository-name>/`. Keep it that way when editing.
+The editor runs in the browser and writes to this repository through GitHub, so GitHub has to know it is allowed to. Three steps, done once:
 
-## Later
+1. **GitHub OAuth App** (on the `betulozelci` account): GitHub → Settings → Developer settings → OAuth Apps → New OAuth App.
+   Homepage URL `https://betulozelci.github.io`, Authorization callback URL `https://<worker-name>.<account>.workers.dev/callback` (you get the exact address in step 2 — you can come back and fix it). Copy the **Client ID** and generate a **Client secret**.
+2. **Cloudflare Worker** — the small sign-in helper: https://github.com/sveltia/sveltia-cms-auth → "Deploy to Cloudflare Workers". Set the variables `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (as a secret) and `ALLOWED_DOMAINS` = `betulozelci.github.io,betulozelci.com`. Note the worker URL.
+3. Put the worker URL into `admin/config.yml` as `base_url`, commit, push. Open `/admin/`, sign in with GitHub, done.
 
-This static version is for testing the design with real images. The plan after that: the same pages rebuilt in Astro with a Pages CMS form so she can add paintings without touching files, hosted on the same GitHub repository. Nothing done here is wasted — the CSS, the page structure and the data fields carry over as they are.
+If Betul edits from her own GitHub account instead of the `betulozelci` one, add her as a collaborator on the repository (Settings → Collaborators) with Write access.
+
+## Deploying
+
+GitHub Pages: repository **Settings → Pages → Source: Deploy from a branch → main, / (root)**. Every push to `main` is live within a minute or two.
+
+Custom domain (when ready): add `betulozelci.com` under Settings → Pages → Custom domain and tick *Enforce HTTPS*; at Cloudflare create four `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` and a `CNAME` for `www` → `betulozelci.github.io`, all **DNS only** (grey cloud).
+
+All links and image paths in the site are relative (`images/...`, `../css/...`), never starting with `/`, so the same files work on localhost, on github.io and on the custom domain.

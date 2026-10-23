@@ -1,0 +1,165 @@
+# Editor configuration (Sveltia CMS, Decap-compatible).
+# Every field here maps 1:1 onto the files in data/, which js/main.js renders.
+
+backend:
+  name: github
+  repo: betulozelci/betulozelci.github.io
+  branch: main
+  # Fill in after deploying the sveltia-cms-auth Cloudflare Worker (see README):
+  base_url: https://REPLACE-ME.workers.dev
+  commit_messages:
+    create: "Add {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload {{path}}"
+    deleteMedia: "Delete {{path}}"
+
+# Images uploaded through the editor are resized in the browser before upload,
+# so a 20 MB phone photo becomes a ~500 KB web image automatically.
+media_folder: images/uploads
+public_folder: images/uploads
+media_libraries:
+  default:
+    config:
+      max_file_size: 25000000
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2400
+          height: 2400
+
+# "Save" writes straight to main (no draft/review step) — simplest for one editor.
+publish_mode: simple
+site_url: https://betulozelci.github.io
+display_url: https://betulozelci.github.io
+logo:
+  src: https://betulozelci.github.io/images/portrait.jpg
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: paintings
+    label: Paintings
+    description: Every painting on the site. Drag the handles to change the order inside this list; the "Order" field controls the home page.
+    files:
+      - name: paintings
+        label: Paintings
+        file: data/paintings.json
+        format: json
+        fields:
+          - name: paintings
+            label: Paintings
+            label_singular: Painting
+            widget: list
+            summary: "{{fields.title}} ({{fields.year}})"
+            collapsed: true
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: year, label: Year, widget: number, value_type: int, min: 1990, max: 2100 }
+              - name: surface
+                label: Surface
+                widget: select
+                options:
+                  - { label: Canvas, value: canvas }
+                  - { label: Paper, value: paper }
+                  - { label: Wood panel, value: panel }
+                  - { label: Linen, value: linen }
+                  - { label: Textile / fabric, value: textile }
+                  - { label: Other, value: other }
+                default: canvas
+              - { name: medium, label: Medium, widget: string, hint: "e.g. Oil on canvas, Acrylic and oil on raw canvas" }
+              - { name: width_cm, label: Width (cm), widget: number, value_type: float, step: 0.5, min: 1 }
+              - { name: height_cm, label: Height (cm), widget: number, value_type: float, step: 0.5, min: 1 }
+              - name: status
+                label: Status
+                widget: select
+                options:
+                  - { label: Available, value: available }
+                  - { label: Sold, value: sold }
+                  - { label: Not for sale, value: nfs }
+                default: available
+              - { name: saatchi_url, label: Saatchi Art link, widget: string, required: false, hint: "Paste the painting's Saatchi Art page. Leave empty if it is not listed there." }
+              - { name: featured, label: Show on home page, widget: boolean, default: true }
+              - { name: order, label: Order on home page, widget: number, value_type: int, default: 99, hint: "Lower numbers come first." }
+              - { name: description, label: Description, widget: text, required: false }
+              - name: images
+                label: Photos
+                widget: object
+                collapsed: false
+                fields:
+                  - { name: front, label: Front view, widget: image, hint: "The main photo. Straight on, cropped to the canvas edges." }
+                  - { name: detail, label: Detail, widget: image, required: false }
+                  - { name: detail2, label: Detail 2, widget: image, required: false }
+                  - { name: detail3, label: Detail 3, widget: image, required: false }
+                  - { name: edges, label: Edges, widget: image, required: false }
+                  - { name: room, label: In a room, widget: image, required: false }
+                  - { name: exhibition, label: In the exhibition, widget: image, required: false }
+                  - { name: artist, label: With the artist, widget: image, required: false }
+              - { name: id, label: Web address name, widget: string, required: false, pattern: ['^[a-z0-9-]*$', 'Lowercase letters, numbers and hyphens only'], hint: "Optional. Used in the painting's web address, e.g. becoming-one. If empty, it is made from the title." }
+
+  - name: exhibitions
+    label: Exhibitions
+    description: Upcoming and current shows appear on the home page; past shows move to the About page by themselves.
+    files:
+      - name: exhibitions
+        label: Exhibitions
+        file: data/exhibitions.json
+        format: json
+        fields:
+          - name: exhibitions
+            label: Exhibitions
+            label_singular: Exhibition
+            widget: list
+            summary: "{{fields.title}} — {{fields.venue}} ({{fields.start}})"
+            collapsed: true
+            fields:
+              - { name: title, label: Exhibition title, widget: string }
+              - { name: venue, label: Venue, widget: string }
+              - { name: city, label: City, widget: string, required: false }
+              - { name: start, label: Opens, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - { name: end, label: Closes, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: false }
+              - { name: url, label: Link, widget: string, required: false, hint: "Gallery page, event page or Instagram post." }
+
+  - name: settings
+    label: Site settings
+    files:
+      - name: site
+        label: Name, contact & photos
+        file: data/site.json
+        format: json
+        fields:
+          - { name: name, label: Artist name, widget: string }
+          - { name: tagline, label: One-line intro, widget: string }
+          - { name: email, label: Contact email, widget: string }
+          - { name: instagram, label: Instagram link, widget: string, required: false }
+          - { name: behance, label: Behance link, widget: string, required: false }
+          - { name: saatchi, label: Saatchi Art profile link, widget: string, required: false, hint: "Leave empty until the profile exists; the link hides itself." }
+          - { name: hero, label: Home page painting, widget: string, hint: "The web address name (id) of the painting shown big on the home page, e.g. becoming-one." }
+          - { name: portrait, label: Portrait photo, widget: image }
+          - { name: studio, label: Wide photo for the About page, widget: image, required: false }
+
+      - name: about
+        label: About page
+        file: data/about.json
+        format: json
+        fields:
+          - { name: statement, label: Artist statement, widget: text, hint: "Leave an empty line between paragraphs." }
+          - name: education
+            label: Education
+            widget: list
+            summary: "{{fields.year}} — {{fields.text}}"
+            fields:
+              - { name: year, label: Year, widget: string }
+              - { name: text, label: "Degree, school, city", widget: string }
+          - { name: show_awards, label: Show awards & press, widget: boolean, default: false }
+          - name: awards
+            label: Awards & press
+            widget: list
+            required: false
+            summary: "{{fields.year}} — {{fields.text}}"
+            fields:
+              - { name: year, label: Year, widget: string }
+              - { name: text, label: "Award, shortlist or article", widget: string }
