@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<!-- This ONE page shows any painting: painting.html?p=the-painting-id -->
+<body data-page="painting" data-root="../">
+
+  <header class="site-header wrap">
+    <a class="brand" href="../index.html" data-site="name">Artist Name</a>
+    <nav class="nav" aria-label="Main">
+      <a href="../work.html">Work</a>
+      <a href="../about.html">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="subbar wrap">
+    <a href="../work.html">← Back to work</a>
+    <div class="pn">
+      <a id="prev" href="#">← Previous</a>
+      <a id="next" href="#">Next →</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="artwork wrap" id="artwork" aria-label="Artwork">
+      <div class="gallery">
+        <div class="main" id="main" title="Click to enlarge"></div>
+        <div class="thumbs" id="thumbs" aria-label="Views"></div>
+      </div>
+      <div class="info">
+        <h1 id="title"></h1>
+        <div class="meta">
+          <span id="year"></span>
+          <span id="medium"></span>
+          <span id="size"></span>
+        </div>
+        <div id="status"></div>
+        <p class="desc" id="desc"></p>
+        <a class="link enquire" id="enquire" href="#">Enquire by email</a>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-label="More work">
+      <div class="section-head">
+        <span class="eyebrow">More work</span>
+        <a class="link" href="../work.html">All work</a>
+      </div>
+      <div class="more-grid" id="more"></div>
+    </section>
+  </main>
+
+  <dialog class="zoom" id="zoom" aria-label="Enlarged view">
+    <img src="" alt="">
+  </dialog>
+
+  <footer class="site-footer wrap" id="contact">
+    <div class="links">
+      <a data-site="email" href="#">hello@example.com</a>
+      <a data-site="instagram" href="#">Instagram</a>
+      <a data-site="saatchi" href="#">Saatchi Art</a>
+    </div>
+    <div class="legal">
+      <span>© <span data-now-year>2026</span> <span data-site="name">Artist Name</span></span>
+      <a href="../privacy.html">Privacy</a>
+    </div>
+  </footer>
+
+  <script src="../js/site.js"></script>
+  <script src="../js/paintings.js"></script>
+  <script src="../js/exhibitions.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

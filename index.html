@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home</title>
+  <meta name="description" content="Betul Özelçi — Istanbul-born painter working in London. Paintings, exhibitions and contact.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home" data-root="">
+
+  <header class="site-header wrap">
+    <a class="brand" href="index.html" data-site="name">Artist Name</a>
+    <nav class="nav" aria-label="Main">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero: one painting, full width. Which one is set by "hero" in js/site.js -->
+  <section class="hero" id="hero" aria-label="Featured painting"></section>
+
+  <section class="intro wrap" aria-label="Introduction">
+    <div id="avatar" aria-hidden="true"></div>
+    <div>
+      <h1 data-site="name">Artist Name</h1>
+      <p data-site="tagline">London-based painter working in abstraction.</p>
+    </div>
+    <a class="link about-link" href="about.html">About the artist</a>
+  </section>
+
+  <!-- Upcoming exhibitions: current and future shows from js/exhibitions.js (max 3).
+       When there are none, the line below is shown instead. -->
+  <section class="exhibitions wrap" id="exhibitions" aria-label="Upcoming exhibitions">
+    <div class="section-head">
+      <span class="eyebrow">Upcoming exhibitions</span>
+      <a class="link" href="about.html#exhibitions">All exhibitions</a>
+    </div>
+    <div id="exh-list"></div>
+    <p class="exh-empty" id="exh-empty" hidden>No upcoming exhibitions at the moment.</p>
+  </section>
+
+  <!-- Selected works: paintings with featured: true in js/paintings.js -->
+  <section class="section wrap" id="work" aria-label="Selected works">
+    <div class="section-head">
+      <span class="eyebrow">Selected works</span>
+      <a class="link" href="work.html">View all work</a>
+    </div>
+    <div class="grid" id="selected"></div>
+  </section>
+
+  <footer class="site-footer wrap" id="contact">
+    <div class="links">
+      <a data-site="email" href="#">hello@example.com</a>
+      <a data-site="instagram" href="#">Instagram</a>
+      <a data-site="saatchi" href="#">Saatchi Art</a>
+    </div>
+    <div class="legal">
+      <span>© <span data-now-year>2026</span> <span data-site="name">Artist Name</span></span>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script src="js/paintings.js"></script>
+  <script src="js/exhibitions.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

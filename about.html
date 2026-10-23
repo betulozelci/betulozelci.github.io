@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="about" data-root="">
+
+  <header class="site-header wrap">
+    <a class="brand" href="index.html" data-site="name">Artist Name</a>
+    <nav class="nav" aria-label="Main">
+      <a href="work.html">Work</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="#contact-info">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="about-top wrap" aria-label="About the artist">
+      <div class="portrait" id="portrait"></div>
+      <div class="text">
+        <span class="eyebrow">Artist statement</span>
+        <h1 data-site="name">Artist Name</h1>
+        <!-- EDIT: the artist statement. One idea per paragraph. -->
+        <div class="statement">
+          <p>I was born and raised in Istanbul, Türkiye, and have a background in fashion and textile design, which influences how I now make innovative, spontaneous, and critical paintings. I carry forward fashion and textiles' use of sampling and appropriation, using specific designs, textures, and color combinations. I also reference past color field painting and painters who bring process forward as an explicit carrier of meaning. I'm interested in how legacies, contexts, and meaning in painting can change, and how painterly vocabularies and meanings can be reclaimed and challenged.</p>
+          <p>I want my paintings to be joyful, euphoric, inquisitive, and aware of their process and history. The way I make the work is initially experimental and research-based, often beginning with preliminary digital studies such as exploring color and material combinations.</p>
+          <p>I use an absorbent wet ground that I work directly into, making marks that spread, bind, and move together, creating a rhythm and a controlled, accidental spread. A different mark then appears: a honeycomb, bubble wrap, dot motif; it is present at different levels in every painting I make. It repeats in varying ways, adjusting its arrangement to each painting's needs.</p>
+          <p>The bubble wrap motif is used simultaneously in two ways. First, it functions like any other pictorial device or series of marks; it allows multiplicity and a reflexive, post-Impressionistic, euphoric, optimistic energy into the paintings. A second reading is that the bubble wrap is also a sign of abstraction's fate; it will be largely wrapped and unseen in today's saturated image-soaked world. Although applied for pictorial unity and beauty, it also functions as a mechanical sign of plastic packaging, asphyxiation, and the doom world of late industrial capitalism.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv wrap" aria-label="Background">
+      <div>
+        <h2>Education</h2>
+        <!-- EDIT: newest first -->
+        <ul>
+          <li><span class="y">2026</span><span>MA Fine Art, University Name, London</span></li>
+          <li><span class="y">20XX</span><span>BA Fashion and Textile Design, [University], Istanbul</span></li>
+        </ul>
+      </div>
+      <div id="exhibitions">
+        <h2>Exhibitions</h2>
+        <!-- Filled automatically from js/exhibitions.js -->
+        <ul id="cv-exhibitions"></ul>
+      </div>
+      <!-- Awards & press: hidden for now. To show it, delete the word "hidden" from the line below and fill in the list. -->
+      <div hidden>
+        <h2>Awards &amp; press</h2>
+        <!-- EDIT: newest first -->
+        <ul>
+          <li><span class="y">2026</span><span>Award, shortlist or press feature</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="studio wrap" aria-label="Studio">
+      <div id="studio"></div>
+    </section>
+
+    <section class="contact wrap" id="contact-info" aria-label="Contact">
+      <span class="eyebrow">Contact</span><br>
+      <a class="big" data-site="email" href="#">hello@example.com</a>
+      <div class="links">
+        <a data-site="instagram" href="#">Instagram</a>
+        <a data-site="behance" href="#">Behance</a>
+        <a data-site="saatchi" href="#">Saatchi Art profile</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap" id="contact">
+    <div class="links">
+      <a data-site="email" href="#">hello@example.com</a>
+      <a data-site="instagram" href="#">Instagram</a>
+      <a data-site="saatchi" href="#">Saatchi Art</a>
+    </div>
+    <div class="legal">
+      <span>© <span data-now-year>2026</span> <span data-site="name">Artist Name</span></span>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script src="js/paintings.js"></script>
+  <script src="js/exhibitions.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
