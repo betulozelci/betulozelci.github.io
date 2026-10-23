@@ -1,0 +1,115 @@
+{
+  "paintings": [
+    {
+      "id": "becoming-one",
+      "title": "Becoming One",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on canvas",
+      "width_cm": 170,
+      "height_cm": 178.5,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 1,
+      "description": "",
+      "images": {
+        "front": "images/paintings/becoming-one/front.jpg",
+        "detail": "images/paintings/becoming-one/detail.jpg",
+        "detail2": "images/paintings/becoming-one/detail2.jpg",
+        "exhibition": "images/paintings/becoming-one/exhibition.jpg"
+      }
+    },
+    {
+      "id": "wcbt",
+      "title": "We Can Be Together",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on raw canvas",
+      "width_cm": 228,
+      "height_cm": 170,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 2,
+      "description": "",
+      "images": {
+        "front": "images/paintings/wcbt/front.jpg",
+        "detail": "images/paintings/wcbt/detail.jpg",
+        "exhibition": "images/paintings/wcbt/exhibition.jpg"
+      }
+    },
+    {
+      "id": "one-last-time",
+      "title": "One Last Time",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on canvas",
+      "width_cm": 106,
+      "height_cm": 111.5,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 3,
+      "description": "",
+      "images": {
+        "front": "images/paintings/one-last-time/front.jpg",
+        "detail": "images/paintings/one-last-time/detail.jpg"
+      }
+    },
+    {
+      "id": "pale-olive",
+      "title": "Pale Olive",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on canvas",
+      "width_cm": 66,
+      "height_cm": 91,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 4,
+      "description": "",
+      "images": {
+        "front": "images/paintings/pale-olive/front.jpg",
+        "detail": "images/paintings/pale-olive/detail.jpg"
+      }
+    },
+    {
+      "id": "breeding-lilac",
+      "title": "Breeding Lilac",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on canvas",
+      "width_cm": 49,
+      "height_cm": 69.5,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 5,
+      "description": "",
+      "images": {
+        "front": "images/paintings/breeding-lilac/front.jpg",
+        "detail": "images/paintings/breeding-lilac/detail.jpg"
+      }
+    },
+    {
+      "id": "trial",
+      "title": "Trial",
+      "year": 2026,
+      "surface": "canvas",
+      "medium": "Mixed media on canvas",
+      "width_cm": 45,
+      "height_cm": 50.5,
+      "status": "available",
+      "saatchi_url": "",
+      "featured": true,
+      "order": 6,
+      "description": "",
+      "images": {
+        "front": "images/paintings/trial/front.jpg",
+        "detail": "images/paintings/trial/detail.jpg"
+      }
+    }
+  ]
+}
