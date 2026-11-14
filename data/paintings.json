@@ -15,9 +15,7 @@
       "description": "",
       "images": {
         "front": "images/paintings/becoming-one/front.jpg",
-        "detail": "images/paintings/becoming-one/detail.jpg",
-        "detail2": "images/paintings/becoming-one/detail2.jpg",
-        "exhibition": "images/paintings/becoming-one/exhibition.jpg"
+        "detail": "images/paintings/becoming-one/detail.jpg"
       }
     },
     {
@@ -36,7 +34,8 @@
       "images": {
         "front": "images/paintings/wcbt/front.jpg",
         "detail": "images/paintings/wcbt/detail.jpg",
-        "exhibition": "images/paintings/wcbt/exhibition.jpg"
+        "exhibition": "images/paintings/wcbt/exhibition.jpg",
+        "artist": "images/paintings/wcbt/artist.jpg"
       }
     },
     {

@@ -87,10 +87,35 @@
     return '';
   }
   function exhEnd(e) { return date(e.end) || date(e.start); }
-  function upcomingShows() {
+  function exhYear(e) {                       // "year" field, or the year of the opening date
+    if (e.year) return String(e.year).trim();
+    var s = date(e.start); return s ? String(s.getFullYear()) : '';
+  }
+  function exhSortKey(e) {                    // dated shows sort by opening date; year-only shows sort at the end of their year
+    var s = date(e.start); if (s) return s.getTime();
+    var y = parseInt(exhYear(e), 10); return y ? new Date(y, 11, 31).getTime() : 0;
+  }
+  function upcomingShows() {                  // only shows with real dates can be "upcoming"
     var t = today();
     return E.filter(function (e) { var en = exhEnd(e); return en && en >= t; })
             .sort(function (a, b) { return date(a.start) - date(b.start); });
+  }
+  function pastShows() {                      // dated shows that have opened + every year-only show up to this year
+    var t = today(), thisYear = t.getFullYear();
+    return E.map(function (e, i) { return { e: e, i: i }; })
+            .filter(function (x) {
+              var s = date(x.e.start);
+              if (s) return s <= t;
+              var y = parseInt(exhYear(x.e), 10);
+              return y && y <= thisYear;
+            })
+            .sort(function (a, b) { return (exhSortKey(b.e) - exhSortKey(a.e)) || (a.i - b.i); })
+            .map(function (x) { return x.e; });
+  }
+  function exhLine(e) {                       // "Title (Curator), Venue, City"
+    var t = e.title || '';
+    if (e.role) t += ' (' + String(e.role).toLowerCase() + ')';
+    return [t, e.venue, e.city].filter(Boolean).join(', ');
   }
 
   // ---------- a work tile ----------
@@ -339,16 +364,33 @@
 
     var ul = $('#cv-exhibitions');
     if (ul) {
-      var t0 = today();
-      var shows = E.filter(function (e) { var s0 = date(e.start); return s0 && s0 <= t0; });
-      shows.sort(function (a, b) { return date(b.start) - date(a.start); });
+      var shows = pastShows();
       if (!shows.length) ul.appendChild(el('li', null, '—'));
       shows.forEach(function (e) {
         var li = el('li');
-        li.appendChild(el('span', 'y', String(date(e.start).getFullYear())));
-        li.appendChild(el('span', null, [e.title, e.venue, e.city].filter(Boolean).join(', ')));
+        li.appendChild(el('span', 'y', exhYear(e)));
+        if (e.url) {
+          var a = el('a', null, exhLine(e)); a.href = e.url; a.target = '_blank'; a.rel = 'noopener';
+          li.appendChild(a);
+        } else {
+          li.appendChild(el('span', null, exhLine(e)));
+        }
         ul.appendChild(li);
       });
+    }
+
+    var photosSec = $('#photos'), photoGrid = $('#photo-grid');
+    if (photosSec && photoGrid) {
+      var photos = (A.photos || []).filter(function (ph) { return ph && ph.src; });
+      if (photos.length) {
+        photosSec.hidden = false;
+        photos.forEach(function (ph) {
+          var fig = el('figure', 'photo');
+          fig.appendChild(img(src(ph.src), ph.caption || ''));
+          if (ph.caption) fig.appendChild(el('figcaption', null, ph.caption));
+          photoGrid.appendChild(fig);
+        });
+      }
     }
 
     var awardsCol = $('#cv-awards-col');

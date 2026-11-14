@@ -1,3 +1,64 @@
 {
-  "exhibitions": []
+  "exhibitions": [
+    {
+      "title": "Corpus",
+      "role": "",
+      "venue": "Tower Gallery",
+      "city": "London, UK",
+      "year": "2025",
+      "start": "",
+      "end": "",
+      "url": ""
+    },
+    {
+      "title": "In Shape",
+      "role": "",
+      "venue": "Between People Gallery",
+      "city": "London, UK",
+      "year": "2026",
+      "start": "",
+      "end": "",
+      "url": ""
+    },
+    {
+      "title": "Rhythm For Reasons",
+      "role": "",
+      "venue": "Between People Gallery",
+      "city": "London, UK",
+      "year": "2026",
+      "start": "",
+      "end": "",
+      "url": ""
+    },
+    {
+      "title": "Gate 46",
+      "role": "Curator",
+      "venue": "Both Gallery",
+      "city": "London, UK",
+      "year": "2026",
+      "start": "",
+      "end": "",
+      "url": ""
+    },
+    {
+      "title": "JOY",
+      "role": "",
+      "venue": "Espacio Gallery",
+      "city": "London, UK",
+      "year": "2026",
+      "start": "",
+      "end": "",
+      "url": ""
+    },
+    {
+      "title": "MA Fine Art Show",
+      "role": "",
+      "venue": "Between People Gallery",
+      "city": "London, UK",
+      "year": "2026",
+      "start": "",
+      "end": "",
+      "url": ""
+    }
+  ]
 }

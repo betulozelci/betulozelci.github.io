@@ -24,7 +24,7 @@ admin/config.yml        which fields the editor shows, and where it saves them
 
 js/main.js              reads data/*.json and fills the pages. Not edited day to day.
 css/style.css           all styling
-images/                 photos. The editor puts new uploads in images/uploads/ (auto-resized to WebP).
+images/                 photos: paintings/<id>/, artist-images/, exhibition-images/. The editor puts new uploads in images/uploads/ (auto-resized to WebP).
 preview.bat             double-click to view the site on your own computer (see below)
 .nojekyll               tells GitHub Pages not to process the files
 ```
@@ -38,8 +38,9 @@ preview.bat             double-click to view the site on your own computer (see 
 Rules of thumb:
 - **Status** "Sold" shows a Sold label; "Available" plus a Saatchi Art link shows an *Available on Saatchi Art* button; "Available" without a link just says Available.
 - **Show on home page** + **Order** decide which works appear under *Selected works* (max 9).
-- **Exhibitions**: anything whose closing date is today or later appears on the home page as upcoming (max 3); anything that has opened appears on the About page. Both happen automatically from the dates.
+- **Exhibitions**: a past show needs only its year, title, venue and city — it goes on the About page, newest year first (in the order you list them within a year). Give a show opening and closing dates and it also appears on the home page as upcoming (max 3) until it closes, then moves to About by itself. Put *Curator* in Role for shows she curated.
 - **Artist statement**: leave an empty line between paragraphs.
+- **Studio & exhibition photos** (About page) is a list; add or remove photos there and the row resizes itself. Empty list = no row.
 - **Awards & press** stays hidden until *Show awards & press* is on and the list has an entry.
 
 ## Previewing on your computer

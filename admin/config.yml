@@ -102,7 +102,7 @@ collections:
 
   - name: exhibitions
     label: Exhibitions
-    description: Upcoming and current shows appear on the home page; past shows move to the About page by themselves.
+    description: Past shows need only a year — they appear on the About page. Add opening and closing dates to a show and it also appears on the home page as upcoming until it closes.
     files:
       - name: exhibitions
         label: Exhibitions
@@ -113,16 +113,17 @@ collections:
             label: Exhibitions
             label_singular: Exhibition
             widget: list
-            summary: "{{fields.title}} — {{fields.venue}} ({{fields.start}})"
+            summary: "{{fields.year}} — {{fields.title}}, {{fields.venue}}"
             collapsed: true
             fields:
               - { name: title, label: Exhibition title, widget: string }
+              - { name: role, label: Role, widget: string, required: false, hint: "Leave empty for a show you exhibited in; write Curator if you curated it." }
               - { name: venue, label: Venue, widget: string }
-              - { name: city, label: City, widget: string, required: false }
-              - { name: start, label: Opens, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
-              - { name: end, label: Closes, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: false }
+              - { name: city, label: City, widget: string, required: false, hint: "e.g. London, UK" }
+              - { name: year, label: Year, widget: string, pattern: ['^[0-9]{4}$', 'Four digits, e.g. 2026'], hint: "Enough on its own for a past show." }
+              - { name: start, label: Opens (optional), widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: false, hint: "Only needed for upcoming shows." }
+              - { name: end, label: Closes (optional), widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: false }
               - { name: url, label: Link, widget: string, required: false, hint: "Gallery page, event page or Instagram post." }
-
   - name: settings
     label: Site settings
     files:
@@ -139,7 +140,7 @@ collections:
           - { name: saatchi, label: Saatchi Art profile link, widget: string, required: false, hint: "Leave empty until the profile exists; the link hides itself." }
           - { name: hero, label: Home page painting, widget: string, hint: "The web address name (id) of the painting shown big on the home page, e.g. becoming-one." }
           - { name: portrait, label: Portrait photo, widget: image }
-          - { name: studio, label: Wide photo for the About page, widget: image, required: false }
+          - { name: studio, label: Wide photo for the About page, widget: image, required: false, hint: "A landscape photo — an exhibition or studio view." }
 
       - name: about
         label: About page
@@ -154,6 +155,16 @@ collections:
             fields:
               - { name: year, label: Year, widget: string }
               - { name: text, label: "Degree, school, city", widget: string }
+          - name: photos
+            label: Studio & exhibition photos
+            label_singular: Photo
+            widget: list
+            required: false
+            summary: "{{fields.caption}}"
+            hint: "Shown as a row under the wide photo. Leave the list empty to hide the row."
+            fields:
+              - { name: src, label: Photo, widget: image }
+              - { name: caption, label: Caption, widget: string, required: false }
           - { name: show_awards, label: Show awards & press, widget: boolean, default: false }
           - name: awards
             label: Awards & press

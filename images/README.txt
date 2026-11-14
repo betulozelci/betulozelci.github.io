@@ -2,8 +2,12 @@ IMAGES — what goes where
 ========================
 
 images/
-  portrait.jpg                  her photo (home intro circle + About page)
-  exhibition-view.jpg           wide photo on the About page
+  artist-images/
+    portrait.jpg                her photo (home intro circle + About page)  ← data/site.json "portrait"
+    *.jpg                       other photos of her, used in the About photo row  ← data/about.json "photos"
+  exhibition-images/
+    exhibition-1.jpg            wide photo on the About page  ← data/site.json "studio"
+    *.jpg                       other installation views, used in the About photo row
   uploads/                      everything added through the /admin editor lands here (auto-resized WebP)
   paintings/
     <painting-id>/              one folder per painting, added by hand
@@ -26,7 +30,9 @@ NAMING RULES (they matter on GitHub, which is case-sensitive)
     images/paintings/becoming-one/front.jpg
 
 IMAGE PREP (keeps the site fast and the repository small)
-- JPG, long edge 2000–2400 px, quality ~80–85  →  usually 300–700 KB each
+- JPG, long edge 2000 px, quality ~82  →  usually 400–850 KB for a textured painting
+- drop the full-size phone photo into ../originals/ and put only the resized copy here; the
+  site is served from GitHub, and 4 MB per image makes the Work page painfully slow on a phone
 - straight-on, even daylight, colour-accurate; crop to the painting's edges for front.jpg
 - ORIGINAL full-size photos live in ../originals/ (outside this repository) so they are
   never uploaded to GitHub. Put new originals there too.
