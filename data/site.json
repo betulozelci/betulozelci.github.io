@@ -5,19 +5,19 @@
   "instagram": "https://www.instagram.com/betulozelci_studio/",
   "behance": "https://www.behance.net/betlzeli",
   "saatchi": "",
-  "hero": "becoming-one",
   "hero_slides": [
     {
-      "src": "images/artist-images/with-we-can-be-together.jpg",
+      "src": "images/exhibition-images/with-we-can-be-together-wide.jpg",
       "caption": ""
     },
     {
-      "src": "images/exhibition-images/exhibition-2.jpg",
+      "src": "images/exhibition-images/exhibition-1.jpg",
       "caption": ""
     }
   ],
   "hero_seconds": 7,
-  "hero_layout": "split",
+  "hero_layout": "full",
+  "hero": "becoming-one",
   "portrait": "images/artist-images/portrait.jpg",
   "studio": "images/exhibition-images/exhibition-1.jpg"
 }
