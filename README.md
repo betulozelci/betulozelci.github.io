@@ -1,6 +1,6 @@
 # betulozelci.github.io
 
-Betul Özelçi's portfolio site. Plain HTML, CSS and JavaScript — no build step, no framework. GitHub Pages serves the files exactly as they are in this repository.
+Betul Ozelci's portfolio site. Plain HTML, CSS and JavaScript — no build step, no framework. GitHub Pages serves the files exactly as they are in this repository.
 
 **Live site:** https://betulozelci.github.io (later: https://betulozelci.com)
 **Editor:** https://betulozelci.github.io/admin/ — add paintings, exhibitions and photos without touching code.
