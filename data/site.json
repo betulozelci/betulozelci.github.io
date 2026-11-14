@@ -17,6 +17,7 @@
     }
   ],
   "hero_seconds": 7,
+  "hero_layout": "split",
   "portrait": "images/artist-images/portrait.jpg",
   "studio": "images/exhibition-images/exhibition-1.jpg"
 }

@@ -191,6 +191,8 @@
   // ---------- HOME ----------
   function renderHome() {
     var heroBox = $('#hero');
+    var top = $('.top');
+    if (top && S.hero_layout === 'full') top.classList.add('top--full');   // full-width photo, name underneath
     var slides = (S.hero_slides || []).filter(function (sl) { return sl && sl.src; });
     if (heroBox && slides.length) {
       renderHeroSlides(heroBox, slides);

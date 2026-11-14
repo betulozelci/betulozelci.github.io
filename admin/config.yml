@@ -149,6 +149,13 @@ collections:
               - { name: src, label: Photo, widget: image }
               - { name: caption, label: Caption (optional, shown bottom-right), widget: string, required: false }
           - { name: hero_seconds, label: Seconds per photo, widget: number, value_type: int, min: 2, max: 60, default: 7 }
+          - name: hero_layout
+            label: Home page layout
+            widget: select
+            options:
+              - { label: "Photo beside the name (works with any photo shape)", value: split }
+              - { label: "Full-width photo, name underneath (best with wide photos)", value: full }
+            default: split
           - { name: hero, label: Home page painting (only used when the slideshow list is empty), widget: string, required: false, hint: "The web address name (id) of a painting, e.g. becoming-one." }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: studio, label: Wide photo for the About page, widget: image, required: false, hint: "A landscape photo — an exhibition or studio view." }
