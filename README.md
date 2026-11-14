@@ -39,8 +39,8 @@ Rules of thumb:
 - **Status** "Sold" shows a Sold label; "Available" plus a Saatchi Art link shows an *Available on Saatchi Art* button; "Available" without a link just says Available.
 - **Show on home page** + **Order** decide which works appear under *Selected works* (max 9).
 - **Exhibitions**: a past show needs only its year, title, venue and city — it goes on the About page, newest year first (in the order you list them within a year). Give a show opening and closing dates and it also appears on the home page as upcoming (max 3) until it closes, then moves to About by itself. Put *Curator* in Role for shows she curated.
-- **Artist statement**: leave an empty line between paragraphs.
-- **Studio & exhibition photos** (About page) is a list; add or remove photos there and the row resizes itself. Empty list = no row.
+- **Artist statement**: press Enter between paragraphs; each line break starts a new paragraph. (If you edit the JSON file by hand instead of /admin, a paragraph break is written as `\n` inside the text — a real line break is not allowed inside a JSON string.)
+- **Studio & exhibition photos** (About page) is a list shown as one row — same height, original proportions, equal gaps; no captions are shown. Three or four photos look best. Empty list = no row.
 - **Awards & press** stays hidden until *Show awards & press* is on and the list has an entry.
 
 ## Previewing on your computer

@@ -348,7 +348,7 @@
 
     var st = $('#statement');
     if (st) {
-      String(A.statement || '').split(/\n\s*\n/).forEach(function (para) {
+      String(A.statement || '').split(/\n+/).forEach(function (para) {
         if (para.trim()) st.appendChild(el('p', null, para.trim()));
       });
     }
@@ -386,8 +386,11 @@
         photosSec.hidden = false;
         photos.forEach(function (ph) {
           var fig = el('figure', 'photo');
-          fig.appendChild(img(src(ph.src), ph.caption || ''));
-          if (ph.caption) fig.appendChild(el('figcaption', null, ph.caption));
+          var im = img(src(ph.src), ph.caption || '');     // caption is used as alt text only, not shown
+          im.addEventListener('load', function () {
+            if (im.naturalWidth && im.naturalHeight) fig.style.flexGrow = String(im.naturalWidth / im.naturalHeight);
+          });
+          fig.appendChild(im);
           photoGrid.appendChild(fig);
         });
       }

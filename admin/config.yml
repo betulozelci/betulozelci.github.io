@@ -147,7 +147,7 @@ collections:
         file: data/about.json
         format: json
         fields:
-          - { name: statement, label: Artist statement, widget: text, hint: "Leave an empty line between paragraphs." }
+          - { name: statement, label: Artist statement, widget: text, hint: "Press Enter to start a new paragraph." }
           - name: education
             label: Education
             widget: list
@@ -161,10 +161,10 @@ collections:
             widget: list
             required: false
             summary: "{{fields.caption}}"
-            hint: "Shown as a row under the wide photo. Leave the list empty to hide the row."
+            hint: "Shown as one row under the wide photo, each photo in its own proportions. Leave the list empty to hide the row."
             fields:
               - { name: src, label: Photo, widget: image }
-              - { name: caption, label: Caption, widget: string, required: false }
+              - { name: caption, label: Description (not shown on the page — for screen readers and search engines), widget: string, required: false }
           - { name: show_awards, label: Show awards & press, widget: boolean, default: false }
           - name: awards
             label: Awards & press
