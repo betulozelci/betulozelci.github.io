@@ -138,7 +138,18 @@ collections:
           - { name: instagram, label: Instagram link, widget: string, required: false }
           - { name: behance, label: Behance link, widget: string, required: false }
           - { name: saatchi, label: Saatchi Art profile link, widget: string, required: false, hint: "Leave empty until the profile exists; the link hides itself." }
-          - { name: hero, label: Home page painting, widget: string, hint: "The web address name (id) of the painting shown big on the home page, e.g. becoming-one." }
+          - name: hero_slides
+            label: Home page slideshow
+            label_singular: Photo
+            widget: list
+            required: false
+            summary: "{{fields.src}}"
+            hint: "Photos that fade into each other at the top of the home page. Each is shown whole, never cropped. Empty list = the painting below is shown instead."
+            fields:
+              - { name: src, label: Photo, widget: image }
+              - { name: caption, label: Caption (optional, shown bottom-right), widget: string, required: false }
+          - { name: hero_seconds, label: Seconds per photo, widget: number, value_type: int, min: 2, max: 60, default: 7 }
+          - { name: hero, label: Home page painting (only used when the slideshow list is empty), widget: string, required: false, hint: "The web address name (id) of a painting, e.g. becoming-one." }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: studio, label: Wide photo for the About page, widget: image, required: false, hint: "A landscape photo — an exhibition or studio view." }
 

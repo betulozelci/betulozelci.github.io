@@ -38,9 +38,22 @@ figure { margin: 0; }
 .hero { position: relative; background: var(--ph); min-height: 320px; }
 .hero img { width: 100%; height: 640px; object-fit: cover; }
 .hero .caption { position: absolute; right: var(--gutter); bottom: 16px; font-size: 12px; color: var(--muted); background: var(--bg); padding: 6px 10px; border: 1px solid var(--line); }
+/* slideshow version: whole photos, cross-fading */
+.hero--slides {
+  --hero-ratio: 1.2;                                   /* overwritten from the photos once they load */
+  background: var(--bg);
+  height: min(82vh, calc(100vw / var(--hero-ratio)));  /* as tall as the tallest photo needs, never taller than the screen */
+  min-height: 0;
+}
+.hero--slides .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+.hero--slides .slide.is-active { opacity: 1; }
+.hero--slides .slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+.hero--slides .slide .missing { position: absolute; inset: 0; }
+@media (prefers-reduced-motion: reduce) { .hero--slides .slide { transition: none; } }
 @media (max-width: 720px) {
   .hero img { height: 440px; }
   .hero .caption { right: 12px; bottom: 12px; font-size: 11px; }
+  .hero--slides { height: min(70vh, calc(100vw / var(--hero-ratio))); }
 }
 
 /* ---------- home: intro ---------- */
@@ -165,7 +178,7 @@ dialog.zoom::backdrop { background: rgba(28, 27, 24, .9); }
 .cv li { display: flex; gap: 16px; font-size: 15px; line-height: 22px; }
 .cv li .y { width: 48px; flex-shrink: 0; color: var(--muted); font-size: 13px; }
 .studio { padding-bottom: 64px; }
-.studio img { width: 100%; height: 400px; object-fit: cover; background: var(--ph); }
+.studio img { width: 100%; height: auto; display: block; background: var(--ph); }   /* whole photo, own proportions */
 .photos { padding-bottom: 64px; }
 /* one row: every photo the same height, its own proportions (no cropping), equal gaps */
 .photo-grid { display: flex; align-items: stretch; gap: 24px; }
@@ -183,7 +196,6 @@ dialog.zoom::backdrop { background: rgba(28, 27, 24, .9); }
 @media (max-width: 720px) {
   .about-top { padding-top: 20px; padding-bottom: 24px; }
   .about-top h1 { font-size: 26px; }
-  .studio img { height: 220px; }
   .photo-grid { flex-direction: column; gap: 16px; }
   .photo-grid .photo { flex: none; }
   .contact .big { font-size: 22px; }

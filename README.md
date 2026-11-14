@@ -8,7 +8,7 @@ Betul Özelçi's portfolio site. Plain HTML, CSS and JavaScript — no build ste
 ## How it fits together
 
 ```
-index.html              home: hero painting, intro, upcoming exhibitions, selected works
+index.html              home: photo slideshow (or one painting), intro, upcoming exhibitions, selected works
 work.html               all works, with Surface and Year filters
 work/painting.html      ONE page that shows any painting:  work/painting.html?p=<id>
 about.html              portrait, statement, education / exhibitions / awards, wide photo, contact
@@ -37,6 +37,7 @@ preview.bat             double-click to view the site on your own computer (see 
 
 Rules of thumb:
 - **Status** "Sold" shows a Sold label; "Available" plus a Saatchi Art link shows an *Available on Saatchi Art* button; "Available" without a link just says Available.
+- **Home page slideshow** (Site settings) is a list of photos that fade into each other; each photo is shown whole. *Seconds per photo* sets the pace. Leave the list empty and the home page shows the painting named in *Home page painting* instead.
 - **Show on home page** + **Order** decide which works appear under *Selected works* (max 9).
 - **Exhibitions**: a past show needs only its year, title, venue and city — it goes on the About page, newest year first (in the order you list them within a year). Give a show opening and closing dates and it also appears on the home page as upcoming (max 3) until it closes, then moves to About by itself. Put *Curator* in Role for shows she curated.
 - **Artist statement**: press Enter between paragraphs; each line break starts a new paragraph. (If you edit the JSON file by hand instead of /admin, a paragraph break is written as `\n` inside the text — a real line break is not allowed inside a JSON string.)

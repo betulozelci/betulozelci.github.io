@@ -156,15 +156,53 @@
     }
   }
 
+  // ---------- HOME: hero slideshow ----------
+  // Photos are shown whole (never cropped). The box takes the proportions of the tallest photo,
+  // capped to the screen height, so every slide fits inside it; the page colour fills any margin.
+  function renderHeroSlides(box, slides) {
+    box.classList.add('hero--slides');
+    var ratio = Infinity, frames = [];
+    slides.forEach(function (sl, i) {
+      var frame = el('div', 'slide' + (i === 0 ? ' is-active' : ''));
+      var im = img(src(sl.src), sl.caption || '');
+      im.loading = i === 0 ? 'eager' : 'lazy';
+      im.addEventListener('load', function () {
+        if (im.naturalWidth && im.naturalHeight) {
+          ratio = Math.min(ratio, im.naturalWidth / im.naturalHeight);
+          box.style.setProperty('--hero-ratio', String(ratio));
+        }
+      });
+      frame.appendChild(im);
+      if (sl.caption) frame.appendChild(el('span', 'caption', sl.caption));
+      box.appendChild(frame);
+      frames.push(frame);
+    });
+    if (frames.length < 2) return;
+    var seconds = parseFloat(S.hero_seconds);
+    if (!(seconds >= 2)) seconds = 7;
+    var current = 0;
+    setInterval(function () {
+      if (document.hidden) return;                      // don't cycle in a background tab
+      frames[current].classList.remove('is-active');
+      current = (current + 1) % frames.length;
+      frames[current].classList.add('is-active');
+    }, seconds * 1000);
+  }
+
   // ---------- HOME ----------
   function renderHome() {
-    var hero = null;
-    P.forEach(function (p) { if (pid(p) === S.hero) hero = p; });
-    if (!hero && P.length) hero = newestFirst(P)[0];
     var heroBox = $('#hero');
-    if (hero && heroBox) {
-      heroBox.appendChild(img(frontSrc(hero), hero.title));
-      heroBox.appendChild(el('span', 'caption', hero.title + ', ' + hero.year + ' · ' + String(hero.medium || '').toLowerCase() + ' · ' + hero.width_cm + ' × ' + hero.height_cm + ' cm'));
+    var slides = (S.hero_slides || []).filter(function (sl) { return sl && sl.src; });
+    if (heroBox && slides.length) {
+      renderHeroSlides(heroBox, slides);
+    } else {
+      var hero = null;
+      P.forEach(function (p) { if (pid(p) === S.hero) hero = p; });
+      if (!hero && P.length) hero = newestFirst(P)[0];
+      if (hero && heroBox) {
+        heroBox.appendChild(img(frontSrc(hero), hero.title));
+        heroBox.appendChild(el('span', 'caption', hero.title + ', ' + hero.year + ' · ' + String(hero.medium || '').toLowerCase() + ' · ' + hero.width_cm + ' × ' + hero.height_cm + ' cm'));
+      }
     }
 
     var avatarBox = $('#avatar');

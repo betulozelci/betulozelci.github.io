@@ -6,6 +6,17 @@
   "behance": "https://www.behance.net/betlzeli",
   "saatchi": "",
   "hero": "becoming-one",
+  "hero_slides": [
+    {
+      "src": "images/artist-images/with-we-can-be-together.jpg",
+      "caption": ""
+    },
+    {
+      "src": "images/exhibition-images/exhibition-2.jpg",
+      "caption": ""
+    }
+  ],
+  "hero_seconds": 7,
   "portrait": "images/artist-images/portrait.jpg",
   "studio": "images/exhibition-images/exhibition-1.jpg"
 }
