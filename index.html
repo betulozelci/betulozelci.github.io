@@ -21,18 +21,21 @@
     </nav>
   </header>
 
-  <!-- Hero: the photos in "hero_slides" (data/site.json) fade into each other every "hero_seconds".
-       If that list is empty, the painting named in "hero" is shown instead. -->
-  <section class="hero" id="hero" aria-label="Featured photos"></section>
+  <!-- Top of the page: photo slideshow on the left, name and intro on the right.
+       The photos come from "hero_slides" in data/site.json and fade every "hero_seconds";
+       if that list is empty, the painting named in "hero" is shown instead. -->
+  <div class="top wrap">
+    <section class="hero" id="hero" aria-label="Featured photos"></section>
 
-  <section class="intro wrap" aria-label="Introduction">
-    <div id="avatar" aria-hidden="true"></div>
-    <div>
-      <h1 data-site="name">Artist Name</h1>
-      <p data-site="tagline">London-based painter working in abstraction.</p>
-    </div>
-    <a class="link about-link" href="about.html">About the artist</a>
-  </section>
+    <section class="intro" aria-label="Introduction">
+      <div id="avatar" aria-hidden="true"></div>
+      <div>
+        <h1 data-site="name">Artist Name</h1>
+        <p data-site="tagline">London-based painter working in abstraction.</p>
+      </div>
+      <a class="link about-link" href="about.html">About the artist</a>
+    </section>
+  </div>
 
   <!-- Upcoming exhibitions: current and future shows from js/exhibitions.js (max 3).
        When there are none, the line below is shown instead. -->
