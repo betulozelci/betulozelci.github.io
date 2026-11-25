@@ -102,7 +102,7 @@ collections:
 
   - name: exhibitions
     label: Exhibitions
-    description: Past shows need only a year — they appear on the About page. Add opening and closing dates to a show and it also appears on the home page as upcoming until it closes.
+    description: Past shows need only a year — they appear on the About page. Add opening and closing dates to a show and it also appears on the home page as upcoming until it closes. Shows from the same year appear in list order, so keep the newest at the top.
     files:
       - name: exhibitions
         label: Exhibitions
