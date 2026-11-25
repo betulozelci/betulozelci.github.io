@@ -157,20 +157,38 @@
   }
 
   // ---------- HOME: hero slideshow ----------
-  // Photos are shown whole (never cropped). The box takes the proportions of the tallest photo,
-  // capped to the screen height, so every slide fits inside it; the page colour fills any margin.
+  // "split" layout: photos are shown whole; the box takes the proportions of the tallest photo,
+  // capped to the screen height, and the page colour fills any margin.
+  // "full" layout: the box is a fixed wide strip (see CSS). A photo close to that shape fills it edge to edge
+  // (the browser trims a few % at most); a photo that would lose more than FIT_LIMIT is shown whole instead,
+  // with a blurred copy of itself behind it, so paintings are never cut off.
+  var FIT_LIMIT = 0.10;
   function renderHeroSlides(box, slides) {
     var ratio = Infinity, frames = [];
+    var full = !!box.closest('.top--full');
+    function fit(frame, im) {
+      if (!full || !im.naturalWidth || !box.clientHeight) return;
+      var r = im.naturalWidth / im.naturalHeight, b = box.clientWidth / box.clientHeight;
+      frame.classList.toggle('is-fit', 1 - Math.min(r, b) / Math.max(r, b) > FIT_LIMIT);
+    }
     slides.forEach(function (sl, i) {
       var frame = el('div', 'slide' + (i === 0 ? ' is-active' : ''));
-      var im = img(src(sl.src), sl.caption || '');
+      var im = img(src(sl.src), sl.caption || '', 'photo');
       im.loading = i === 0 ? 'eager' : 'lazy';
+      if (full) {
+        var bd = img(src(sl.src), '', 'backdrop');
+        bd.setAttribute('aria-hidden', 'true');
+        bd.loading = im.loading;
+        frame.appendChild(bd);
+      }
       im.addEventListener('load', function () {
         if (im.naturalWidth && im.naturalHeight) {
           ratio = Math.min(ratio, im.naturalWidth / im.naturalHeight);
           box.style.setProperty('--hero-ratio', String(ratio));
+          fit(frame, im);
         }
       });
+      window.addEventListener('resize', function () { fit(frame, im); });
       frame.appendChild(im);
       if (sl.caption) frame.appendChild(el('span', 'caption', sl.caption));
       box.appendChild(frame);
@@ -323,6 +341,7 @@
     if (list[idx + 1]) next.href = 'painting.html?p=' + encodeURIComponent(pid(list[idx + 1])); else next.hidden = true;
 
     var vs = views(p);
+    if (S.show_extra_photos !== true) vs = vs.slice(0, 1);   // only the front view, unless extra photos are switched on
     var main = $('#main');
     if (vs.length) main.appendChild(img(src(p.images[vs[0]]), p.title));
     var thumbs = $('#thumbs');

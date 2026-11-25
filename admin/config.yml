@@ -144,7 +144,7 @@ collections:
             widget: list
             required: false
             summary: "{{fields.src}}"
-            hint: "Photos that fade into each other at the top of the home page. Each is shown whole, never cropped. Empty list = the painting below is shown instead."
+            hint: "Photos that fade into each other at the top of the home page. With the full-width layout, crop photos to about 2.8 : 1 (e.g. 2400 × 857) so they fill the strip; taller photos are shown whole with a soft blurred fill at the sides. Empty list = the painting below is shown instead."
             fields:
               - { name: src, label: Photo, widget: image }
               - { name: caption, label: Caption (optional, shown bottom-right), widget: string, required: false }
@@ -159,6 +159,7 @@ collections:
           - { name: hero, label: Home page painting (only used when the slideshow list is empty), widget: string, required: false, hint: "The web address name (id) of a painting, e.g. becoming-one." }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: studio, label: Wide photo for the About page, widget: image, required: false, hint: "A landscape photo — an exhibition or studio view." }
+          - { name: show_extra_photos, label: Show extra photos on painting pages, widget: boolean, default: false, hint: "Off = each painting page shows only the front view. On = detail, exhibition and other photos appear as thumbnails under it." }
 
       - name: about
         label: About page

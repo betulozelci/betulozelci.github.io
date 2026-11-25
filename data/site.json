@@ -7,20 +7,21 @@
   "saatchi": "",
   "hero_slides": [
     {
-      "src": "images/exhibition-images/with-we-can-be-together-wide.jpg",
+      "src": "images/exhibition-images/with-we-can-be-together-slide.jpg",
       "caption": ""
     },
     {
-      "src": "images/exhibition-images/exhibition-4-wide.jpg",
+      "src": "images/exhibition-images/exhibition-4-slide.jpg",
       "caption": ""
     },
     {
-      "src": "images/exhibition-images/exhibition-1.jpg",
+      "src": "images/exhibition-images/exhibition-1-slide.jpg",
       "caption": ""
     }
   ],
   "hero_seconds": 7,
   "hero_layout": "full",
+  "show_extra_photos": false,
   "hero": "becoming-one",
   "portrait": "images/artist-images/portrait.jpg",
   "studio": "images/exhibition-images/exhibition-1.jpg"

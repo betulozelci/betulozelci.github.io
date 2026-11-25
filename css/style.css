@@ -56,13 +56,23 @@ figure { margin: 0; }
 }
 /* "hero_layout": "full" — edge-to-edge photo, name and intro underneath (works best with wide photos, 16:9 or wider) */
 .top--full { display: block; padding: 0; }
-.top--full .hero { width: 100%; flex: none; max-height: 82vh; }
+.top--full .hero {
+  width: 100%; flex: none;
+  aspect-ratio: 2.8;                       /* wide strip: on a 16:9 screen this is ~68% of the screen tall */
+  max-height: 68vh;
+  overflow: hidden;
+}
+.top--full .hero img { object-fit: cover; object-position: center; }   /* fills edge to edge; trims a few % at most */
+/* a photo too tall for the strip is shown whole, with a soft blurred copy of itself filling the sides */
+.top--full .hero .backdrop { display: none; }
+.top--full .hero .slide.is-fit .backdrop { display: block; object-fit: cover; filter: blur(32px) saturate(1.1); transform: scale(1.2); opacity: .85; }
+.top--full .hero .slide.is-fit .photo { object-fit: contain; }
 .top--full .intro { flex-direction: row; align-items: center; gap: 24px; padding: 40px var(--gutter); }
 .top--full .intro h1 { font-size: 34px; margin-bottom: 6px; }
 .top--full .intro p { font-size: 17px; max-width: none; }
 .top--full .intro .about-link { margin-left: auto; }
 @media (max-width: 900px) {
-  .top--full .hero { max-height: 70vh; }
+  .top--full .hero { aspect-ratio: 2; max-height: 70vh; }   /* phones: a bit taller strip; centre shown */
   .top--full .intro { flex-wrap: wrap; gap: 16px; padding: 24px var(--gutter); }
   .top--full .intro h1 { font-size: 28px; }
   .top--full .intro .about-link { margin-left: 0; flex-basis: 100%; }
